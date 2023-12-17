@@ -6,18 +6,6 @@ import (
 	"strings"
 )
 
-func analyseReplace(csvPath string) {
-
-	csv, err := os.Open(filePath)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	defer csv.Close()
-	// scanner :=
-
-}
-
 func listFiles(dir string) {
 	files, err := os.ReadDir(dir)
 	if err != nil {
