@@ -3,7 +3,20 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 )
+
+func analyseReplace(csvPath string) {
+
+	csv, err := os.Open(filePath)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer csv.Close()
+	// scanner :=
+
+}
 
 func listFiles(dir string) {
 	files, err := os.ReadDir(dir)
@@ -22,7 +35,12 @@ func listFiles(dir string) {
 			}
 
 		} else {
-			fmt.Println(file.Name())
+			if strings.HasSuffix(file.Name(), ".csv") {
+				csv := file.Name()
+				csvPath := fmt.Sprintf("%s/%s", dir, csv)
+				fmt.Println(csvPath)
+
+			} //CSV filter
 		}
 
 	}
@@ -32,6 +50,7 @@ func listFiles(dir string) {
 func main() {
 
 	// fmt.Println("Happy")
-	listFiles("/home/drew/Projects")
+	listFiles("/home/drew/Projects") //linux
+	// listFiles("%USER%\\Documents\\Projects\\goprojects") //windows
 
 }
