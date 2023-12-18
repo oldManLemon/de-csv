@@ -43,7 +43,10 @@ func analyseReplace(csvPath string) {
 			defer tempFile.Close()
 			//No longer want read open
 			// csv.Close()
-			_, _ = fmt.Fprint(tempFile, seperatorLine)
+			_, err = fmt.Fprint(tempFile, seperatorLine)
+			if err != nil {
+				panic(err)
+			}
 			_, err = io.Copy(tempFile, csv)
 			if err != nil {
 				panic(err)
@@ -60,26 +63,9 @@ func analyseReplace(csvPath string) {
 			// Rename and copy to replace original file
 			err = os.Rename(tempFile.Name(), csvPath)
 			if err != nil {
+				//TODO Figure a better recovery. Maybe a copy to tmp and then delete if all is good.
 				panic(err) //We done messed up now
 			}
-
-			// -------------------
-			//stream in new content followed by the rest of the horse
-			// csvEdit, err := os.OpenFile(csvPath, os.O_APPEND, 0600)
-			// if err != nil {
-			// 	panic(err)
-			// }
-			// defer csvEdit.Close()
-			// _, err = csvEdit.Seek(0, 0)
-			// if err != nil {
-			// 	panic(err)
-			// }
-			// _, err = csvEdit.WriteString(seperatorLine)
-			// if err != nil {
-			// 	panic(err)
-			// }
-			// csvEdit.Close()
-
 		}
 
 	}
@@ -124,10 +110,6 @@ func main() {
 
 	// fmt.Println("Happy")
 	// listFiles("/home/drew/Projects") //linux
-	// userHomeDir, err := os.UserHomeDir()
-	// if err != nil {
-	// 	// return err
-	// }
 	listFiles("C:\\Users\\Drew\\Documents\\Projects\\goprojects") //windows
 
 }
