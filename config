@@ -1,6 +1,7 @@
 homeFolders:
-- Documents
-- Downloads
+  - Documents
+  - Downloads
+  - Pictures
 separators:
-- ";"
-- ","
+  - ";"
+  - ","
