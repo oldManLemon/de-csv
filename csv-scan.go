@@ -5,9 +5,37 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
+
+	"gopkg.in/yaml.v2"
 )
 
+// Config struct to match your YAML structure
+type Config struct {
+	Folders []string `yaml:"folders"`
+}
+
+func loadConfig() (Config, error) {
+	// Hardcoded directory path (replace with your actual path)
+	homeDir, _ := os.UserHomeDir()
+	configDir := filepath.Join(homeDir, "Documents", "Projects", "goprojects", "de-csv")
+	configFile := filepath.Join(configDir, "config")
+
+	fmt.Println("Documents Directory:", configDir)
+	fmt.Println("Downloads Directory:", configFile)
+	data, err := os.ReadFile(configFile)
+	if err != nil {
+		return Config{}, err
+	}
+	var config Config
+	err = yaml.Unmarshal(data, &config)
+	if err != nil {
+		return Config{}, err
+	}
+	return config, nil
+
+}
 func analyseReplace(csvPath string) {
 
 	// seperators := []string{",", ";"}
@@ -98,7 +126,6 @@ func listFiles(dir string) {
 				csvPath := fmt.Sprintf("%s/%s", dir, csv)
 				fmt.Println(csvPath)
 				analyseReplace(csvPath)
-
 			} //CSV filter
 		}
 
@@ -110,6 +137,11 @@ func main() {
 
 	// fmt.Println("Happy")
 	// listFiles("/home/drew/Projects") //linux
-	listFiles("C:\\Users\\Drew\\Documents\\Projects\\goprojects") //windows
-
+	// listFiles("C:\\Users\\Drew\\Documents\\Projects\\goprojects") //windows
+	data, err := loadConfig()
+	if err != nil {
+		fmt.Println("Error Reading Config: ", err)
+		return
+	}
+	fmt.Println("Data: ", data.Folders)
 }
