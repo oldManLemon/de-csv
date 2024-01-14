@@ -14,6 +14,7 @@ import (
 // Config struct to match your YAML structure
 type Config struct {
 	HomeFolders []string `yaml:"homeFolders"`
+	Separators  []string `yaml:"separators"`
 }
 
 func loadConfig() (Config, error) {
@@ -44,14 +45,38 @@ func loadConfig() (Config, error) {
 		config.HomeFolders[i] = newPath
 	}
 
+	// Convert seperators from strings to runes
+	for i, sep := range config.Separators {
+		runeSeparator, err := convertToRune(sep)
+		if err != nil {
+			return Config{}, err
+		}
+		config.Separators[i] = string(runeSeparator)
+		fmt.Println(i)
+		fmt.Println(sep)
+		fmt.Println(runeSeparator)
+	}
+
 	return config, nil
 
+}
+
+// convertToRune function
+func convertToRune(sepStr string) (rune, error) {
+	if len(sepStr) != 1 {
+		return 0, fmt.Errorf("separator must be a single character")
+	}
+
+	return []rune(sepStr)[0], nil
 }
 func analyseReplace(csvPath string) {
 
 	// seperators := []string{",", ";"}
 	//TODO Build a bigger list of known deliminators
-	seperators := []rune{',', ';'} //use rune. https://go.dev/blog/strings bufio streams in bytes
+	// seperators := []rune{',', ';'} //use rune. https://go.dev/blog/strings bufio streams in bytes
+	// Do I want to load it in again or simply turn the config global somehow?
+	data, err := loadConfig()
+	seperators := data.Separators
 
 	csv, err := os.Open(csvPath)
 	if err != nil {
@@ -149,14 +174,19 @@ func main() {
 	// fmt.Println("Happy")
 	// listFiles("/home/drew/Projects") //linux
 	// listFiles("C:\\Users\\Drew\\Documents\\Projects\\goprojects") //windows
+	//* Load Config file
 	data, err := loadConfig()
 	if err != nil {
 		fmt.Println("Error Reading Config: ", err)
 		return
 	}
-	fmt.Println("Data: ", data.HomeFolders)
+	fmt.Println("Data: ", data)
+	fmt.Println("Data_home: ", data.HomeFolders)
+	fmt.Println("Data_sep: ", data.Separators)
 	for _, folder := range data.HomeFolders {
+		//! This works but is annoying for the moment for debug.
 		listFiles(folder)
+		// fmt.Println(folder)
 
 	}
 }
