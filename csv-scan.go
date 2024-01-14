@@ -13,7 +13,7 @@ import (
 
 // Config struct to match your YAML structure
 type Config struct {
-	Folders []string `yaml:"folders"`
+	HomeFolders []string `yaml:"homeFolders"`
 }
 
 func loadConfig() (Config, error) {
@@ -21,9 +21,10 @@ func loadConfig() (Config, error) {
 	homeDir, _ := os.UserHomeDir()
 	configDir := filepath.Join(homeDir, "Documents", "Projects", "goprojects", "de-csv")
 	configFile := filepath.Join(configDir, "config")
+	// fmt.Println("Documents Directory:", configDir)
+	// fmt.Println("Downloads Directory:", configFile)
+	// TODO get a better home for the config file.
 
-	fmt.Println("Documents Directory:", configDir)
-	fmt.Println("Downloads Directory:", configFile)
 	data, err := os.ReadFile(configFile)
 	if err != nil {
 		return Config{}, err
@@ -33,6 +34,16 @@ func loadConfig() (Config, error) {
 	if err != nil {
 		return Config{}, err
 	}
+
+	//Add homepath
+	for i, folder := range config.HomeFolders {
+		// fmt.Println(folder)
+		newPath := filepath.Join(homeDir, folder)
+		// fmt.Println(newPath)
+		// fmt.Println(config.HomeFolders[i])
+		config.HomeFolders[i] = newPath
+	}
+
 	return config, nil
 
 }
@@ -143,5 +154,9 @@ func main() {
 		fmt.Println("Error Reading Config: ", err)
 		return
 	}
-	fmt.Println("Data: ", data.Folders)
+	fmt.Println("Data: ", data.HomeFolders)
+	for _, folder := range data.HomeFolders {
+		listFiles(folder)
+
+	}
 }
