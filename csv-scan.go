@@ -69,14 +69,14 @@ func convertToRune(sepStr string) (rune, error) {
 
 	return []rune(sepStr)[0], nil
 }
-func analyseReplace(csvPath string) {
+func analyseReplace(csvPath string, config Config) {
 
 	// seperators := []string{",", ";"}
 	//TODO Build a bigger list of known deliminators
 	// seperators := []rune{',', ';'} //use rune. https://go.dev/blog/strings bufio streams in bytes
 	// Do I want to load it in again or simply turn the config global somehow?
-	data, err := loadConfig()
-	seperators := data.Separators
+	// data, err := loadConfig()
+	seperators := config.Separators
 
 	csv, err := os.Open(csvPath)
 	if err != nil {
@@ -140,7 +140,7 @@ func analyseReplace(csvPath string) {
 	// return ""
 
 }
-func listFiles(dir string) {
+func listFiles(dir string, config Config) {
 	files, err := os.ReadDir(dir)
 	if err != nil {
 		fmt.Println(err)
@@ -153,7 +153,7 @@ func listFiles(dir string) {
 				// fmt.Println(file.Name())
 			} else {
 				newPath := fmt.Sprintf("%s/%s", dir, file.Name())
-				listFiles(newPath) // Recursion already 🤣
+				listFiles(newPath, config) // Recursion already 🤣
 			}
 
 		} else {
@@ -161,7 +161,7 @@ func listFiles(dir string) {
 				csv := file.Name()
 				csvPath := fmt.Sprintf("%s/%s", dir, csv)
 				fmt.Println(csvPath)
-				analyseReplace(csvPath)
+				analyseReplace(csvPath, config)
 			} //CSV filter
 		}
 
@@ -182,7 +182,7 @@ func main() {
 	// fmt.Println("Data_sep: ", data.Separators)
 	for _, folder := range data.HomeFolders {
 		//! This works but is annoying for the moment for debug.
-		listFiles(folder)
+		listFiles(folder, data)
 		// fmt.Println(folder)
 
 	}
