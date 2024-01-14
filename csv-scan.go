@@ -171,9 +171,6 @@ func listFiles(dir string) {
 
 func main() {
 
-	// fmt.Println("Happy")
-	// listFiles("/home/drew/Projects") //linux
-	// listFiles("C:\\Users\\Drew\\Documents\\Projects\\goprojects") //windows
 	//* Load Config file
 	data, err := loadConfig()
 	if err != nil {
