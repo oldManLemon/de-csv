@@ -52,9 +52,9 @@ func loadConfig() (Config, error) {
 			return Config{}, err
 		}
 		config.Separators[i] = string(runeSeparator)
-		fmt.Println(i)
-		fmt.Println(sep)
-		fmt.Println(runeSeparator)
+		// fmt.Println(i)
+		// fmt.Println(sep)
+		// fmt.Println(runeSeparator)
 	}
 
 	return config, nil
@@ -177,9 +177,9 @@ func main() {
 		fmt.Println("Error Reading Config: ", err)
 		return
 	}
-	fmt.Println("Data: ", data)
-	fmt.Println("Data_home: ", data.HomeFolders)
-	fmt.Println("Data_sep: ", data.Separators)
+	// fmt.Println("Data: ", data)
+	// fmt.Println("Data_home: ", data.HomeFolders)
+	// fmt.Println("Data_sep: ", data.Separators)
 	for _, folder := range data.HomeFolders {
 		//! This works but is annoying for the moment for debug.
 		listFiles(folder)
