@@ -19,9 +19,13 @@ type Config struct {
 
 func loadConfig() (Config, error) {
 	// Hardcoded directory path (replace with your actual path)
+	appDataDir := os.Getenv("APPDATA")
 	homeDir, _ := os.UserHomeDir()
-	configDir := filepath.Join(homeDir, "Documents", "Projects", "goprojects", "de-csv")
+	configDir := filepath.Join(appDataDir, "de-csv")
 	configFile := filepath.Join(configDir, "config")
+	//* debugging
+	// configDir := filepath.Join(A, "Documents", "Projects", "goprojects", "de-csv")
+	// configFile := filepath.Join(configDir, "config")
 	// fmt.Println("Documents Directory:", configDir)
 	// fmt.Println("Downloads Directory:", configFile)
 	// TODO get a better home for the config file.
