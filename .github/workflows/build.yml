@@ -1,0 +1,23 @@
+name: Build
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build de-csv Project
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.21.5'
+
+    - name: Build
+      run: go build
