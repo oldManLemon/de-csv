@@ -40,7 +40,7 @@ jobs:
             de-csv.tar.gz
             de-csv.zip
 
-release:
+  release:
     name: Release
     runs-on: ubuntu-latest
     needs: build  
