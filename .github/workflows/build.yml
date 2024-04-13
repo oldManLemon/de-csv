@@ -41,6 +41,10 @@ jobs:
             de-csv.zip
 
   release:
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
     name: Release
     runs-on: ubuntu-latest
     needs: build  
